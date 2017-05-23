@@ -1,0 +1,30 @@
+{
+  "name": "cz-conventional-changelog-tasks",
+  "version": "0.0.1",
+  "description": "Commitizen adapter following the conventional-changelog format.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/design4pro/cz-conventional-changelog-tasks.git"
+  },
+  "keywords": [
+    "commitzen"
+  ],
+  "author": {
+    "name": "Rafał Wolak",
+    "email": "r.wolak@design4.pro",
+    "url": "https://www.design4.pro"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/design4pro/cz-conventional-changelog-tasks/issues"
+  },
+  "homepage": "https://github.com/design4pro/cz-conventional-changelog-tasks#readme",
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-config-google": "^0.7.1"
+  }
+}
