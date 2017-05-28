@@ -1,15 +1,13 @@
-'use strict';
-var execSync = require('child_process').execSync;
-var conventionalChangelogCore = require('conventional-changelog-core');
-var preset = require('../src/');
-var expect = require('chai').expect;
-var gitDummyCommit = require('git-dummy-commit');
-var shell = require('shelljs');
-var through = require('through2');
-var betterThanBefore = require('better-than-before')();
-var preparing = betterThanBefore.preparing;
+import conventionalChangelogCore from 'conventional-changelog-core';
+import preset from '../src/index';
+import {expect} from 'chai';
+import gitDummyCommit from 'git-dummy-commit';
+import shell from 'shelljs';
+import through from 'through2';
+import BetterThanBefore from 'better-than-before';
+const {setups,  preparing} = new BetterThanBefore();
 
-betterThanBefore.setups([
+setups([
   function() {
     shell.config.silent = true;
     shell.rm('-rf', 'tmp');
@@ -50,7 +48,7 @@ betterThanBefore.setups([
   }
 ]);
 
-describe('angular preset', function() {
+describe('custom preset', function() {
   it('should work if there is no semver tag', function(done) {
     preparing(1);
 
@@ -88,7 +86,7 @@ describe('angular preset', function() {
       }));
   });
 
-  it('should replace #[0-9]+ with GitHub issue URL', function(done) {
+  it('should replace #[0-9]+ with issue URL', function(done) {
     preparing(2);
 
     conventionalChangelogCore({
@@ -99,7 +97,9 @@ describe('angular preset', function() {
       })
       .pipe(through(function(chunk) {
         chunk = chunk.toString();
-        expect(chunk).to.include('[#133](https://github.com/design4pro/conventional-changelog-custom/issues/133)');
+
+        expect(chunk).to.include('[#133]');
+
         done();
       }));
   });
@@ -115,8 +115,10 @@ describe('angular preset', function() {
       })
       .pipe(through(function(chunk) {
         chunk = chunk.toString();
-        expect(chunk).to.include('[#88](https://github.com/design4pro/conventional-changelog-custom/issues/88)');
-        expect(chunk).to.not.include('closes [#88](https://github.com/design4pro/conventional-changelog-custom/issues/88)');
+
+        expect(chunk).to.include('[#88]');
+        expect(chunk).to.not.include('closes [#88]');
+
         done();
       }));
   });
@@ -132,7 +134,9 @@ describe('angular preset', function() {
       })
       .pipe(through(function(chunk) {
         chunk = chunk.toString();
+
         expect(chunk).to.include('[@bcoe](https://github.com/bcoe)');
+
         done();
       }));
   });

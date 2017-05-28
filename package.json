@@ -1,17 +1,28 @@
 {
-  "name": "cz-conventional-changelog-tasks",
+  "name": "conventional-changelog-custom",
   "version": "0.0.1",
-  "description": "Commitizen adapter following the conventional-changelog format.",
-  "main": "index.js",
+  "description": "Conventional Changelog custom preset.",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "babel --copy-files --out-dir dist src",
+    "check-coverage": "nyc check-coverage --statements 80 --branches 50 --functions 100 --lines 80",
+    "commit": "git-cz",
+    "cover": "nyc --reporter=lcov npm t",
+    "lint": "jshint *.js --exclude node_modules && jscs *.js",
+    "prebuild": "rimraf dist",
+    "report-coverage": "cat ./coverage/lcov.info | codecov",
+    "start": "npm run test",
+    "test": "mocha test/index.js --compilers js:babel-register",
+    "validate": "npm run cover && npm run check-coverage",
+    "watch:test": "npm t -- --watch"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/design4pro/cz-conventional-changelog-tasks.git"
+    "url": "git+https://github.com/design4pro/conventional-changelog-custom.git"
   },
   "keywords": [
-    "commitzen"
+    "conventional-changelog",
+    "preset"
   ],
   "author": {
     "name": "Rafał Wolak",
@@ -20,11 +31,49 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/design4pro/cz-conventional-changelog-tasks/issues"
+    "url": "https://github.com/design4pro/conventional-changelog-custom/issues"
   },
-  "homepage": "https://github.com/design4pro/cz-conventional-changelog-tasks#readme",
+  "homepage": "https://github.com/design4pro/conventional-changelog-custom#readme",
   "devDependencies": {
-    "eslint": "^3.19.0",
-    "eslint-config-google": "^0.7.1"
+    "babel-cli": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "babel-register": "^6.24.1",
+    "better-than-before": "^1.0.0",
+    "chai": "^4.0.0",
+    "codecov": "^2.2.0",
+    "commitizen": "^2.9.6",
+    "conventional-changelog-core": "^1.8.0",
+    "cz-conventional-changelog": "^2.0.0",
+    "find-config": "^1.0.0",
+    "ghooks": "^2.0.0",
+    "git-dummy-commit": "^1.3.0",
+    "istanbul": "^0.4.5",
+    "jscs": "^3.0.7",
+    "jshint": "^2.9.4",
+    "mocha": "^3.4.2",
+    "nyc": "^10.3.2",
+    "rimraf": "^2.6.1",
+    "shelljs": "^0.7.7",
+    "through2": "^2.0.3"
+  },
+  "dependencies": {
+    "compare-func": "^1.3.2",
+    "github-url-from-git": "^1.5.0",
+    "q": "^1.5.0"
+  },
+  "config": {
+    "ghooks": {
+      "pre-commit": "npm run validate"
+    },
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  },
+  "babel": {
+    "presets": [
+      "es2015",
+      "stage-2"
+    ]
   }
 }
