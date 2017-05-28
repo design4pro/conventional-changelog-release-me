@@ -50,7 +50,7 @@ setups([
 
 describe('custom preset', function() {
   it('should work if there is no semver tag', function(done) {
-    this.timeout(5000);
+    this.timeout(25000);
     preparing(1);
 
     conventionalChangelogCore({
@@ -83,7 +83,7 @@ describe('custom preset', function() {
         expect(chunk).to.not.include('***:**');
         expect(chunk).to.not.include(': Not backward compatible.');
 
-        setTimeout(done, 5000);
+        done();
       }));
   });
 
@@ -143,6 +143,7 @@ describe('custom preset', function() {
   });
 
   it('should not discard commit if there is BREAKING CHANGE', function(done) {
+    this.timeout(25000);
     preparing(5);
 
     conventionalChangelogCore({
