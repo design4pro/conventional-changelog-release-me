@@ -50,6 +50,7 @@ setups([
 
 describe('custom preset', function() {
   it('should work if there is no semver tag', function(done) {
+    this.timeout(5000);
     preparing(1);
 
     conventionalChangelogCore({
@@ -82,7 +83,7 @@ describe('custom preset', function() {
         expect(chunk).to.not.include('***:**');
         expect(chunk).to.not.include(': Not backward compatible.');
 
-        done();
+        setTimeout(done, 5000);
       }));
   });
 
