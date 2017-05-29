@@ -1,6 +1,6 @@
 {
   "name": "conventional-changelog-custom-bugs",
-  "version": "0.0.0-development",
+  "version": "0.0.0-semantically-released",
   "description": "Conventional Changelog custom preset.",
   "main": "dist/index.js",
   "scripts": {
