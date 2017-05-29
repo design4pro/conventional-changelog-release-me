@@ -13,8 +13,8 @@ node_js:
 before_install:
   - npm i -g npm@^2.0.0
 before_script:
-  - git config --global user.name 'Travis-CI'
-  - git config --global user.email 'travis-ci@design4.pro'
+  - git config --global user.name 'DESIGN4PRO'
+  - git config --global user.email 'dev@design4.pro'
   - npm prune
 script:
   - npm run cover
@@ -22,4 +22,4 @@ script:
   - npm run build
 after_success:
   - npm run report-coverage
-  - npm run semantic-release
+  - npm run release
