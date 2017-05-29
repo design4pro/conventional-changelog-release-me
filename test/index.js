@@ -67,7 +67,7 @@ describe('custom preset', function() {
         expect(chunk).to.include('amazing new module');
         expect(chunk).to.include('**compile:** avoid a bug');
         expect(chunk).to.include('make it faster');
-        expect(chunk).to.include(', closes [#1](https://github.com/design4pro/conventional-changelog-custom/issues/1) [#2](https://github.com/design4pro/conventional-changelog-custom/issues/2)');
+        expect(chunk).to.include(', closes [#1](https://github.com/design4pro/conventional-changelog-custom-bugs/issues/1) [#2](https://github.com/design4pro/conventional-changelog-custom-bugs/issues/2)');
         expect(chunk).to.include('Not backward compatible.');
         expect(chunk).to.include('**compile:** The Change is huge.');
         expect(chunk).to.include('Features');

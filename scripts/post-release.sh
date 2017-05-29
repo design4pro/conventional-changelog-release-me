@@ -10,6 +10,7 @@ log "Generating and committing changelog"
 npm run changelog
 git add CHANGELOG.md
 git commit -m "docs: Update CHANGELOG.md"
+git push
 echo ""
 
 log "Done!"
