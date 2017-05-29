@@ -14,7 +14,8 @@
     "start": "npm run test",
     "test": "mocha test/index.js --compilers js:babel-register",
     "validate": "npm run cover && npm run check-coverage",
-    "watch:test": "npm t -- --watch"
+    "watch:test": "npm t -- --watch",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "repository": {
     "type": "git",
