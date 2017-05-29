@@ -8,10 +8,8 @@ branches:
     - master
 notifications:
   email: false
-node_js:
-  - iojs
 before_install:
-  - npm i -g npm@^2.0.0
+  - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
 before_script:
   - git config --global user.name 'DESIGN4PRO'
   - git config --global user.email 'dev@design4.pro'
