@@ -7,13 +7,6 @@ import {resolve} from 'path';
 import gufg from 'github-url-from-git';
 
 const readFile = Q.denodeify(require('fs').readFile);
-let pkgJson = {};
-
-try {
-  pkgJson = findConfig.require('package.json', {home: false});
-} catch (err) {
-  console.error('no root package.json found');
-}
 
 const parserOpts = {
   headerPattern: /^(\w*)(?:\((.*)\))?\: (.*)$/,
@@ -27,7 +20,19 @@ const parserOpts = {
   revertCorrespondence: ['header', 'hash']
 };
 
+function readPackage() {
+  try {
+    return findConfig.require('package.json', {home: false});
+  } catch (err) {
+    /* istanbul ignore next */
+    return {};
+  }
+}
+
 function issueUrl() {
+  const pkgJson = readPackage();
+
+  /* istanbul ignore else  */
   if (pkgJson.bugs && pkgJson.bugs.url) {
     return pkgJson.bugs.url;
   } else if (pkgJson.repository && pkgJson.repository.url && ~pkgJson.repository.url.indexOf('github.com')) {
@@ -87,8 +92,8 @@ function presetOpts(cb) {
 
       if (typeof commit.subject === 'string') {
         let url = issueUrl();
+        // Issue URLs.
         if (url) {
-          // Issue URLs.
           commit.subject = commit.subject.replace(/#([0-9]+)/g, (_, issue) => {
             issues.push(issue);
             return '[#' + issue + '](' + url + issue + ')';

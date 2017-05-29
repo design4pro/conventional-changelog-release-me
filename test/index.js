@@ -5,7 +5,7 @@ import gitDummyCommit from 'git-dummy-commit';
 import shell from 'shelljs';
 import through from 'through2';
 import BetterThanBefore from 'better-than-before';
-const {setups,  preparing} = new BetterThanBefore();
+const {setups, preparing} = new BetterThanBefore();
 
 setups([
   function() {
@@ -38,6 +38,8 @@ setups([
     gitDummyCommit(['refactor(code): change a lot of code', 'BREAKING CHANGE: The Change is huge.']);
     gitDummyCommit(['test(*): more tests', 'BREAKING CHANGE: The Change is huge.']);
     gitDummyCommit(['chore(deps): bump', 'BREAKING CHANGE: The Change is huge.']);
+    gitDummyCommit(['build(package): change a lot of code', 'BREAKING CHANGE: The Change is huge.']);
+    gitDummyCommit(['ci(*): change a lot of code', 'BREAKING CHANGE: The Change is huge.']);
   },
   function() {
     gitDummyCommit(['feat(deps): bump', 'BREAKING CHANGES: Also works :)']);
@@ -160,6 +162,8 @@ describe('custom preset', function() {
         expect(chunk).to.include('Code Refactoring');
         expect(chunk).to.include('Tests');
         expect(chunk).to.include('Chores');
+        expect(chunk).to.include('Build');
+        expect(chunk).to.include('Continuous Integration');
 
         done();
       }));
