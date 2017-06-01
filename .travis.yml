@@ -2,8 +2,7 @@ sudo: false
 language: node_js
 node_js:
   - "iojs"
-  - "7"
-  - "6"
+  - "node"
 cache:
   directories:
     - node_modules
@@ -14,6 +13,7 @@ notifications:
   email: false
 before_install:
   - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
+  - npm i -g npm@^2.0.0
 before_script:
   - git config --global user.name 'DESIGN4PRO'
   - git config --global user.email 'dev@design4.pro'
