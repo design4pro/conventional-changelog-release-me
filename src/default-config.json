@@ -1,45 +1,58 @@
 {
-  "maxSubjectLength": 80,
+  "max-line-length": {
+    "head": 100,
+    "body": 100
+  },
   "types": [
     {
       "key": "feat",
-      "name": "Features"
+      "name": "Features",
+      "description": "A new feature"
     },
     {
       "key": "fix",
-      "name": "Bug Fixes"
+      "name": "Bug Fixes",
+      "description": "A bug fix"
     },
     {
       "key": "perf",
-      "name": "Performance Improvements"
+      "name": "Performance Improvements",
+      "description": "A code change that improves performance"
     },
     {
       "key": "revert",
-      "name": "Reverts"
+      "name": "Reverts",
+      "commitable": false
     },
     {
       "key": "docs",
       "name": "Documentation",
+      "description": "Documentation only changes",
       "hide": true
     },
     {
       "key": "style",
       "name": "Styles",
+      "description": "Changes that do not affect the meaning of the code\n(white-space, formatting, missing semi-colons, etc)",
       "hide": true
     },
     {
       "key": "refactor",
       "name": "Code Refactoring",
+      "description": "A code change that neither fixes a bug or adds a feature",
       "hide": true
     },
     {
       "key": "test",
       "name": "Tests",
+      "description": "Adding missing tests",
       "hide": true
     },
     {
       "key": "chore",
-      "name": "Chores"
+      "name": "Chores",
+      "description": "Changes to the build process or auxiliary tools\nand libraries such as documentation generation",
+      "hide": true
     }
   ],
   "notes": [
