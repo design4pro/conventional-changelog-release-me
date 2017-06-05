@@ -115,7 +115,7 @@ function transformFn(someConfig) {
     // If empty scope
     if (commit.scope === '*') {
       commit.scope = '';
-    } else if (url) {
+    } else if (url && commit.scope) {
       commit.scope = parseIssueId(commit.scope);
     }
 
