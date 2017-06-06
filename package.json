@@ -1,6 +1,6 @@
 {
   "name": "conventional-changelog-release-me",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Conventional Changelog custom preset for Release Me.",
   "main": "dist/index.js",
   "scripts": {
@@ -9,10 +9,9 @@
     "commit": "git-cz",
     "cover": "nyc --reporter=lcov npm t",
     "lint": "jshint *.js --exclude node_modules && jscs *.js",
-    "post-release": "./scripts/post-release.sh",
     "prebuild": "rimraf dist",
     "precommit": "npm run validate",
-    "release": "release-me",
+    "release": "../release-me/dist/cli.js",
     "report-coverage": "cat ./coverage/lcov.info | codecov",
     "start": "npm run test",
     "test": "echo \"Error: no test specified\"",
