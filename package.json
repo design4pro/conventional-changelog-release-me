@@ -11,7 +11,7 @@
     "lint": "jshint *.js --exclude node_modules && jscs *.js",
     "prebuild": "rimraf dist",
     "precommit": "npm run validate",
-    "release": "../release-me/dist/cli.js",
+    "release": "release-me",
     "report-coverage": "cat ./coverage/lcov.info | codecov",
     "start": "npm run test",
     "test": "echo \"Error: no test specified\"",
