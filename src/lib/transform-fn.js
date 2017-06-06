@@ -1,9 +1,10 @@
 'use strict';
 
-const extend = require('extend');
-const path = require('path');
-const gufg = require('github-url-from-git');
-const defaultConfig = require('./../default-config');
+import extend from 'extend';
+import path from 'path';
+import gufg from 'github-url-from-git';
+import defaultConfig from './../default-config';
+
 let pkgJson = {};
 try {
   pkgJson = require(path.resolve(
@@ -24,16 +25,13 @@ function transformFn(someConfig) {
     .map(note => note.keyword);
 
   function hasImportantNote(commit) {
-    return commit.notes.reduce(
-      (hadImportant, note) => {
-        if (hadImportant) {
-          return true;
-        }
+    return commit.notes.reduce((hadImportant, note) => {
+      if (hadImportant) {
+        return true;
+      }
 
-        return importantNoteKeywords.indexOf(note.title) !== -1;
-      },
-      false
-    );
+      return importantNoteKeywords.indexOf(note.title) !== -1;
+    }, false);
   }
 
   function trimHash(commit) {
@@ -67,13 +65,13 @@ function transformFn(someConfig) {
       const DEFAULT_MATCHER = /#([0-9]+)/g;
 
       // Jira Issues
-      string = string.replace(JIRA_ISSUE_MATCHER, function(_, issue) {
+      string = string.replace(JIRA_ISSUE_MATCHER, function (_, issue) {
         issues.push(issue);
         return '[' + issue + '](' + url + issue + ')';
       });
 
       // Issue URLs
-      string = string.replace(DEFAULT_MATCHER, function(_, issue) {
+      string = string.replace(DEFAULT_MATCHER, function (_, issue) {
         issues.push(issue);
         return '[#' + issue + '](' + url + issue + ')';
       });
@@ -100,11 +98,11 @@ function transformFn(someConfig) {
       return undefined;
     }
 
-    commit.notes.forEach(function(note) {
+    commit.notes.forEach(function (note) {
       note.title = 'BREAKING CHANGES';
     });
 
-    commit.type = config.types.find(function(type) {
+    commit.type = config.types.find(function (type) {
       if (commit.type === type.key) {
         return true;
       }
@@ -142,7 +140,7 @@ function transformFn(someConfig) {
     }
 
     // Remove references that already appear in the subject
-    commit.references = commit.references.filter(function(reference) {
+    commit.references = commit.references.filter(function (reference) {
       if (issues.indexOf(reference.issue) === -1) {
         return true;
       }
@@ -154,4 +152,4 @@ function transformFn(someConfig) {
   };
 }
 
-module.exports = transformFn;
+export default transformFn;

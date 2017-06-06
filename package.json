@@ -1,7 +1,7 @@
 {
   "name": "conventional-changelog-release-me",
   "version": "0.0.1",
-  "description": "Conventional Changelog custom preset.",
+  "description": "Conventional Changelog custom preset for Release Me.",
   "main": "dist/index.js",
   "scripts": {
     "build": "babel --copy-files --out-dir dist src",

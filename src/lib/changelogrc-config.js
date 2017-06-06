@@ -1,8 +1,8 @@
 'use strict';
 
-const findup = require('findup');
-const fs = require('fs');
-const path = require('path');
+import findup from 'findup';
+import fs from 'fs';
+import path from 'path';
 
 const CHANGELOGRC = '.changelogrc';
 
@@ -32,4 +32,4 @@ function changelogrcConfig(cb) {
   return promise;
 }
 
-module.exports = changelogrcConfig;
+export default changelogrcConfig;
