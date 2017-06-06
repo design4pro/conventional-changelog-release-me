@@ -1,7 +1,9 @@
 sudo: false
 language: node_js
 node_js:
-  - "iojs"
+  - "4"
+  - "5"
+  - "6"
   - "node"
 cache:
   directories:
@@ -15,8 +17,8 @@ before_install:
   - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
   - npm i -g npm@^2.0.0
 before_script:
-  - git config --global user.name 'DESIGN4PRO'
-  - git config --global user.email 'dev@design4.pro'
+  - git config --global user.name 'Travis-CI'
+  - git config --global user.email 'travis-ci@design4.pro'
   - npm prune
 script:
   - npm run cover
