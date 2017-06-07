@@ -14,13 +14,11 @@ branches:
 notifications:
   email: false
 before_install:
-  - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
   - npm i -g npm@^2.0.0
 before_script:
   - npm prune
 script:
   - npm run cover
   - npm run check-coverage
-  - npm run build
 after_success:
   - npm run report-coverage
