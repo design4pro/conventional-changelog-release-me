@@ -16,7 +16,7 @@ module.exports = Promise.all([
   qReadFile(resolve(__dirname, 'templates/commit.hbs'), 'utf-8'),
   qReadFile(resolve(__dirname, 'templates/footer.hbs'), 'utf-8')
 ])
-  .spread(function (template, header, commit, footer) {
+  .spread((template, header, commit, footer) => {
     const parserOpts = {
       headerPattern: /^(\w*)(?:\((.*)\))?\: (.*)$/,
       headerCorrespondence: [
