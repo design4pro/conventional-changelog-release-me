@@ -1,5 +1,5 @@
 {
-  "max-line-length": {
+  "maxLineLength": {
     "head": 100,
     "body": 100
   },

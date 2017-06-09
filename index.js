@@ -1,20 +1,20 @@
 'use strict';
 
-import { resolve } from 'path';
-import compareFunc from 'compare-func';
-import changelogrcConfig from './lib/changelogrc-config';
-import transformFn from './lib/transform-fn';
-import Q from 'q';
-import { readFile } from 'fs';
-const qReadFile = Q.denodeify(readFile);
+const compareFunc = require('compare-func');
+const Q = require('q');
+const readFile = Q.denodeify(require('fs').readFile);
+const resolve = require('path').resolve;
+
+const changelogrcConfig = require('./lib/changelogrc-config');
+const transformFn = require('./lib/transform-fn');
 
 module.exports = Promise.all([
   changelogrcConfig()
 ]).then(args => Q.all([
-  qReadFile(resolve(__dirname, 'templates/template.hbs'), 'utf-8'),
-  qReadFile(resolve(__dirname, 'templates/header.hbs'), 'utf-8'),
-  qReadFile(resolve(__dirname, 'templates/commit.hbs'), 'utf-8'),
-  qReadFile(resolve(__dirname, 'templates/footer.hbs'), 'utf-8')
+  readFile(resolve(__dirname, 'templates/template.hbs'), 'utf-8'),
+  readFile(resolve(__dirname, 'templates/header.hbs'), 'utf-8'),
+  readFile(resolve(__dirname, 'templates/commit.hbs'), 'utf-8'),
+  readFile(resolve(__dirname, 'templates/footer.hbs'), 'utf-8')
 ])
   .spread((template, header, commit, footer) => {
     const parserOpts = {
