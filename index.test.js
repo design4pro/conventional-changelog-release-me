@@ -7,67 +7,41 @@ const expect = require('chai').expect;
 const commit = require('git-dummy-commit');
 const shell = require('shelljs');
 const through = require('through2');
-const betterThanBefore = require('better-than-before')();
-const preparing = betterThanBefore.preparing;
 
-betterThanBefore.setups([
-  () => {
-    shell.config.silent = true;
+function initInTempFolder() {
     shell.rm('-rf', 'tmp');
+    shell.config.silent = true;
     shell.mkdir('tmp');
     shell.cd('tmp');
-    shell.mkdir('git-templates');
-    shell.exec('git init --template=./git-templates');
+    shell.exec('git init');
 
+    commit('root-commit');
+}
+
+function finishTemp() {
+    shell.cd('../');
+    shell.rm('-rf', 'tmp');
+}
+
+describe('preset', () => {
+  beforeEach(initInTempFolder);
+  afterEach(finishTemp);
+
+  it('should work if there is no semver tag', (done) => {
     commit('chore: first commit');
     commit(['feat: amazing new module', 'BREAKING CHANGE: Not backward compatible.']);
     commit(['fix(compile): avoid a bug', 'BREAKING CHANGE: The Change is huge.']);
     commit(['perf(ngOptions): make it faster', ' closes #1, #2']);
     commit('revert(ngOptions): bad commit');
     commit('fix(*): oops');
-  },
-  () => {
-    commit('feat(awesome): addresses the issue brought up in #133');
-  },
-  () => {
-    commit('feat(awesome): fix #88');
-  },
-  () => {
-    commit('feat(awesome): issue brought up by @bcoe! on Friday');
-  },
-  () => {
-    commit(['docs(readme): make it clear', 'BREAKING CHANGE: The Change is huge.']);
-    commit(['style(whitespace): make it easier to read', 'BREAKING CHANGE: The Change is huge.']);
-    commit(['refactor(code): change a lot of code', 'BREAKING CHANGE: The Change is huge.']);
-    commit(['test(*): more tests', 'BREAKING CHANGE: The Change is huge.']);
-    commit(['chore(deps): bump', 'BREAKING CHANGE: The Change is huge.']);
-  },
-  () => {
-    commit(['feat(deps): bump', 'BREAKING CHANGES: Also works :)']);
-  },
-  () => {
-    shell.exec('git tag v1.0.0');
-    commit('feat: some more features');
-  }
-]);
-
-betterThanBefore.tearsWithJoy(() => {
-  shell.cd('../');
-  shell.rm('-rf', 'tmp');
-});
-
-describe('preset', () => {
-
-  it('should work if there is no semver tag', (done) => {
-    preparing(1);
 
     conventionalChangelogCore({
       config: preset
     })
-      .on('error', function(err) {
+      .on('error', (err) => {
         done(err);
       })
-      .pipe(through(function(chunk) {
+      .pipe(through((chunk) => {
         chunk = chunk.toString();
 
         expect(chunk).to.include('amazing new module');
@@ -96,15 +70,15 @@ describe('preset', () => {
   });
 
   it('should replace #[0-9]+ with GitHub issue URL', (done) => {
-    preparing(2);
+    commit('feat(awesome): addresses the issue brought up in #133');
 
     conventionalChangelogCore({
       config: preset
     })
-      .on('error', function(err) {
+      .on('error', (err) => {
         done(err);
       })
-      .pipe(through(function(chunk) {
+      .pipe(through((chunk) => {
         chunk = chunk.toString();
         expect(chunk).to.include('[#133](https://github.com/design4pro/conventional-changelog-release-me/issues/133)');
         done();
@@ -112,15 +86,15 @@ describe('preset', () => {
   });
 
   it('should remove the issues that already appear in the subject', (done) => {
-    preparing(3);
+    commit('feat(awesome): fix #88');
 
     conventionalChangelogCore({
       config: preset
     })
-      .on('error', function(err) {
+      .on('error', (err) => {
         done(err);
       })
-      .pipe(through(function(chunk) {
+      .pipe(through((chunk) => {
         chunk = chunk.toString();
         expect(chunk).to.include('[#88](https://github.com/design4pro/conventional-changelog-release-me/issues/88)');
         expect(chunk).to.not.include('closes [#88](https://github.com/design4pro/conventional-changelog-release-me/issues/88)');
@@ -129,15 +103,15 @@ describe('preset', () => {
   });
 
   it('should replace @username with GitHub user URL', (done) => {
-    preparing(4);
+    commit('feat(awesome): issue brought up by @bcoe! on Friday');
 
     conventionalChangelogCore({
       config: preset
     })
-      .on('error', function(err) {
+      .on('error', (err) => {
         done(err);
       })
-      .pipe(through(function(chunk) {
+      .pipe(through((chunk) => {
         chunk = chunk.toString();
         expect(chunk).to.include('[@bcoe](https://github.com/bcoe)');
         done();
@@ -145,15 +119,19 @@ describe('preset', () => {
   });
 
   it('should not discard commit if there is BREAKING CHANGE', (done) => {
-    preparing(5);
+    commit(['docs(readme): make it clear', 'BREAKING CHANGE: The Change is huge.']);
+    commit(['style(whitespace): make it easier to read', 'BREAKING CHANGE: The Change is huge.']);
+    commit(['refactor(code): change a lot of code', 'BREAKING CHANGE: The Change is huge.']);
+    commit(['test(*): more tests', 'BREAKING CHANGE: The Change is huge.']);
+    commit(['chore(deps): bump', 'BREAKING CHANGE: The Change is huge.']);
 
     conventionalChangelogCore({
       config: preset
     })
-      .on('error', function(err) {
+      .on('error', (err) => {
         done(err);
       })
-      .pipe(through(function(chunk) {
+      .pipe(through((chunk) => {
         chunk = chunk.toString();
 
         expect(chunk).to.include('Documentation');
@@ -167,15 +145,15 @@ describe('preset', () => {
   });
 
   it('should BREAKING CHANGES the same as BREAKING CHANGE', (done) => {
-    preparing(6);
+    commit(['feat(deps): bump', 'BREAKING CHANGES: Also works :)']);
 
     conventionalChangelogCore({
       config: preset
     })
-      .on('error', function(err) {
+      .on('error', (err) => {
         done(err);
       })
-      .pipe(through(function(chunk) {
+      .pipe(through((chunk) => {
         chunk = chunk.toString();
 
         expect(chunk).to.include('Also works :)');
@@ -185,17 +163,18 @@ describe('preset', () => {
   });
 
   it('should work if there is a semver tag', (done) => {
-    preparing(7);
+    shell.exec('git tag v1.0.0');
+    commit('feat: some more features');
     var i = 0;
 
     conventionalChangelogCore({
       config: preset,
       outputUnreleased: true
     })
-      .on('error', function(err) {
+      .on('error', (err) => {
         done(err);
       })
-      .pipe(through(function(chunk, enc, cb) {
+      .pipe(through((chunk, enc, cb) => {
         chunk = chunk.toString();
 
         expect(chunk).to.include('some more features');
