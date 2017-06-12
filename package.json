@@ -1,6 +1,6 @@
 {
   "name": "conventional-changelog-release-me",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Conventional Changelog custom preset for Release Me.",
   "main": "index.js",
   "scripts": {

@@ -1,6 +1,17 @@
 # Change Log
 
 
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/design4pro/conventional-changelog-release-me/tree/v1.1.0) (2017-06-12)
+
+[Full Changelog](https://github.com/design4pro/conventional-changelog-release-me/compare/v1.0.1...v1.1.0)
+
+
+### Features
+
+* **package:** remove babel, update dependencies and add release-me ([f71c36f](https://github.com/design4pro/conventional-changelog-release-me/commit/f71c36f))<br>
+
+
 <a name="1.0.1"></a>
 ## 1.0.1 (2017-06-06)
 
