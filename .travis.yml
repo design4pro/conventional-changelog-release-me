@@ -14,10 +14,9 @@ branches:
     - /^greenkeeper/.*$/
 notifications:
   email: false
-before_install:
-  - git status
-  - git branch
-  - git log
+before_script:
+  - git config --global user.name 'Travis-CI'
+  - git config --global user.email 'travis-ci@design4.pro'
 script:
   - npm run test:debug
   - npm run test:check-coverage
