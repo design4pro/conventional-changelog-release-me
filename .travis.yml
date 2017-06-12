@@ -16,6 +16,7 @@ notifications:
   email: false
 before_install:
   - npm i -g npm@^2.0.0
+  - git remote set-branches origin master && git fetch
 before_script:
   - npm prune
 script:
