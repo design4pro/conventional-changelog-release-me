@@ -18,6 +18,8 @@ before_install:
   - git remote set-branches origin master && git fetch
   - git checkout master
   - git checkout -
+  - git branch
+  - git log
 script:
   - npm run test:debug
   - npm run test:check-coverage
