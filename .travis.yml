@@ -15,10 +15,9 @@ branches:
 notifications:
   email: false
 before_install:
-  - npm i -g npm@^2.0.0
-before_script:
   - git remote set-branches origin master && git fetch
-  - npm prune
+  - git checkout master
+  - git checkout -
 script:
   - npm run test:debug
   - npm run test:check-coverage
