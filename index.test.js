@@ -13,15 +13,21 @@ function commit(msg) {
   shell.exec('git commit --allow-empty -m"' + msg + '"');
 }
 
-betterThanBefore.setups([
-  () => {
-    shell.config.silent = true;
+function initInTempFolder() {
     shell.rm('-rf', 'tmp');
+    shell.config.silent = true;
     shell.mkdir('tmp');
     shell.cd('tmp');
-    shell.mkdir('git-templates');
-    shell.exec('git init --template=./git-templates');
+    shell.exec('git init');
+}
 
+function finishTemp() {
+    shell.cd('../');
+    shell.rm('-rf', 'tmp');
+}
+
+betterThanBefore.setups([
+  () => {
     commit('chore: first commit');
     commit('feat: amazing new module\nBREAKING CHANGE: Not backward compatible.');
     commit('fix(compile): avoid a bug\nBREAKING CHANGE: The Change is huge.');
@@ -54,7 +60,10 @@ betterThanBefore.setups([
   }
 ]);
 
-describe('angular preset', () => {
+describe('preset', () => {
+  beforeEach(initInTempFolder);
+  afterEach(finishTemp);
+
   it('should work if there is no semver tag', (done) => {
     preparing(1);
 
