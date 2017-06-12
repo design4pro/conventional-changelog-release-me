@@ -67,7 +67,7 @@ describe('angular preset', () => {
         expect(chunk).to.include('amazing new module');
         expect(chunk).to.include('**compile:** avoid a bug');
         expect(chunk).to.include('make it faster');
-        expect(chunk).to.include(', closes [#1](https://github.com/conventional-changelog/conventional-changelog-angular/issues/1) [#2](https://github.com/conventional-changelog/conventional-changelog-angular/issues/2)');
+        expect(chunk).to.include(', closes [#1](https://github.com/design4pro/conventional-changelog-release-me/issues/1) [#2](https://github.com/design4pro/conventional-changelog-release-me/issues/2)');
         expect(chunk).to.include('Not backward compatible.');
         expect(chunk).to.include('**compile:** The Change is huge.');
         expect(chunk).to.include('Features');
@@ -100,7 +100,7 @@ describe('angular preset', () => {
       })
       .pipe(through(function(chunk) {
         chunk = chunk.toString();
-        expect(chunk).to.include('[#133](https://github.com/conventional-changelog/conventional-changelog-angular/issues/133)');
+        expect(chunk).to.include('[#133](https://github.com/design4pro/conventional-changelog-release-me/issues/133)');
         done();
       }));
   });
@@ -116,8 +116,8 @@ describe('angular preset', () => {
       })
       .pipe(through(function(chunk) {
         chunk = chunk.toString();
-        expect(chunk).to.include('[#88](https://github.com/conventional-changelog/conventional-changelog-angular/issues/88)');
-        expect(chunk).to.not.include('closes [#88](https://github.com/conventional-changelog/conventional-changelog-angular/issues/88)');
+        expect(chunk).to.include('[#88](https://github.com/design4pro/conventional-changelog-release-me/issues/88)');
+        expect(chunk).to.not.include('closes [#88](https://github.com/design4pro/conventional-changelog-release-me/issues/88)');
         done();
       }));
   });
@@ -194,33 +194,6 @@ describe('angular preset', () => {
 
         expect(chunk).to.include('some more features');
         expect(chunk).to.not.include('BREAKING');
-
-        i++;
-        cb();
-      }, () => {
-        expect(i).to.equal(1);
-        done();
-      }));
-  });
-
-  it('should work with unknown host', (done) => {
-    preparing(7);
-    var i = 0;
-
-    conventionalChangelogCore({
-      config: preset,
-      pkg: {
-        path: __dirname + '/fixtures/_unknown-host.json'
-      }
-    })
-      .on('error', function(err) {
-        done(err);
-      })
-      .pipe(through(function(chunk, enc, cb) {
-        chunk = chunk.toString();
-
-        expect(chunk).to.include('(http://unknown/compare');
-        expect(chunk).to.include('](http://unknown/commits/');
 
         i++;
         cb();
