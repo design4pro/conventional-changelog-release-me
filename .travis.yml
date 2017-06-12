@@ -17,7 +17,6 @@ notifications:
 before_install:
   - git remote set-branches origin master && git fetch
   - git checkout master
-  - git checkout -
   - git branch
   - git log
 script:
