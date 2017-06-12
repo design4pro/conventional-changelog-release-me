@@ -61,6 +61,9 @@ describe('preset', () => {
   it('should work if there is no semver tag', (done) => {
     preparing(1);
 
+    shell.exec('git status');
+    shell.exec('git log');
+
     conventionalChangelogCore({
       config: preset
     })
