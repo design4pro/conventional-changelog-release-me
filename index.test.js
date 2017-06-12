@@ -4,11 +4,14 @@ const execSync = require('child_process').execSync;
 const conventionalChangelogCore = require('conventional-changelog-core');
 const preset = require('./index');
 const expect = require('chai').expect;
-const gitDummyCommit = require('git-dummy-commit');
 const shell = require('shelljs');
 const through = require('through2');
 const betterThanBefore = require('better-than-before')();
 const preparing = betterThanBefore.preparing;
+
+function commit(msg) {
+  shell.exec('git commit --allow-empty -m"' + msg + '"');
+}
 
 betterThanBefore.setups([
   () => {
@@ -19,35 +22,35 @@ betterThanBefore.setups([
     shell.mkdir('git-templates');
     shell.exec('git init --template=./git-templates');
 
-    gitDummyCommit('chore: first commit');
-    gitDummyCommit(['feat: amazing new module', 'BREAKING CHANGE: Not backward compatible.']);
-    gitDummyCommit(['fix(compile): avoid a bug', 'BREAKING CHANGE: The Change is huge.']);
-    gitDummyCommit(['perf(ngOptions): make it faster', ' closes #1, #2']);
-    gitDummyCommit('revert(ngOptions): bad commit');
-    gitDummyCommit('fix(*): oops');
+    commit('chore: first commit');
+    commit('feat: amazing new module\nBREAKING CHANGE: Not backward compatible.');
+    commit('fix(compile): avoid a bug\nBREAKING CHANGE: The Change is huge.');
+    commit('perf(ngOptions): make it faster\n closes #1, #2');
+    commit('revert(ngOptions): bad commit');
+    commit('fix(*): oops');
   },
   () => {
-    gitDummyCommit(['feat(awesome): addresses the issue brought up in #133']);
+    commit('feat(awesome): addresses the issue brought up in #133');
   },
   () => {
-    gitDummyCommit(['feat(awesome): fix #88']);
+    commit('feat(awesome): fix #88');
   },
   () => {
-    gitDummyCommit(['feat(awesome): issue brought up by @bcoe! on Friday']);
+    commit('feat(awesome): issue brought up by @bcoe! on Friday');
   },
   () => {
-    gitDummyCommit(['docs(readme): make it clear', 'BREAKING CHANGE: The Change is huge.']);
-    gitDummyCommit(['style(whitespace): make it easier to read', 'BREAKING CHANGE: The Change is huge.']);
-    gitDummyCommit(['refactor(code): change a lot of code', 'BREAKING CHANGE: The Change is huge.']);
-    gitDummyCommit(['test(*): more tests', 'BREAKING CHANGE: The Change is huge.']);
-    gitDummyCommit(['chore(deps): bump', 'BREAKING CHANGE: The Change is huge.']);
+    commit('docs(readme): make it clear\nBREAKING CHANGE: The Change is huge.');
+    commit('style(whitespace): make it easier to read\nBREAKING CHANGE: The Change is huge.');
+    commit('refactor(code): change a lot of code\nBREAKING CHANGE: The Change is huge.');
+    commit('test(*): more tests\nBREAKING CHANGE: The Change is huge.');
+    commit('chore(deps): bump\nBREAKING CHANGE: The Change is huge.');
   },
   () => {
-    gitDummyCommit(['feat(deps): bump', 'BREAKING CHANGES: Also works :)']);
+    commit('feat(deps): bump\nBREAKING CHANGES: Also works :)');
   },
   () => {
     shell.exec('git tag v1.0.0');
-    gitDummyCommit('feat: some more features');
+    commit('feat: some more features');
   }
 ]);
 
