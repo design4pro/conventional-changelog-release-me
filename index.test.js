@@ -20,9 +20,9 @@ betterThanBefore.setups([
     shell.exec('git init --template=./git-templates');
 
     commit('chore: first commit');
-    commit('feat: amazing new module\nBREAKING CHANGE: Not backward compatible.');
-    commit('fix(compile): avoid a bug\nBREAKING CHANGE: The Change is huge.');
-    commit('perf(ngOptions): make it faster\n closes #1, #2');
+    commit(['feat: amazing new module', 'BREAKING CHANGE: Not backward compatible.']);
+    commit(['fix(compile): avoid a bug', 'BREAKING CHANGE: The Change is huge.']);
+    commit(['perf(ngOptions): make it faster', ' closes #1, #2']);
     commit('revert(ngOptions): bad commit');
     commit('fix(*): oops');
   },
@@ -36,14 +36,14 @@ betterThanBefore.setups([
     commit('feat(awesome): issue brought up by @bcoe! on Friday');
   },
   () => {
-    commit('docs(readme): make it clear\nBREAKING CHANGE: The Change is huge.');
-    commit('style(whitespace): make it easier to read\nBREAKING CHANGE: The Change is huge.');
-    commit('refactor(code): change a lot of code\nBREAKING CHANGE: The Change is huge.');
-    commit('test(*): more tests\nBREAKING CHANGE: The Change is huge.');
-    commit('chore(deps): bump\nBREAKING CHANGE: The Change is huge.');
+    commit(['docs(readme): make it clear', 'BREAKING CHANGE: The Change is huge.']);
+    commit(['style(whitespace): make it easier to read', 'BREAKING CHANGE: The Change is huge.']);
+    commit(['refactor(code): change a lot of code', 'BREAKING CHANGE: The Change is huge.']);
+    commit(['test(*): more tests', 'BREAKING CHANGE: The Change is huge.']);
+    commit(['chore(deps): bump', 'BREAKING CHANGE: The Change is huge.']);
   },
   () => {
-    commit('feat(deps): bump\nBREAKING CHANGES: Also works :)');
+    commit(['feat(deps): bump', 'BREAKING CHANGES: Also works :)']);
   },
   () => {
     shell.exec('git tag v1.0.0');
@@ -60,9 +60,6 @@ describe('preset', () => {
 
   it('should work if there is no semver tag', (done) => {
     preparing(1);
-
-    shell.exec('git status');
-    shell.exec('git log');
 
     conventionalChangelogCore({
       config: preset
