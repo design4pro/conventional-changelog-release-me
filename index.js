@@ -1,48 +1,47 @@
 'use strict';
 
-const compareFunc = require('compare-func');
-const Q = require('q');
-const readFile = Q.denodeify(require('fs').readFile);
-const resolve = require('path').resolve;
+var compareFunc = require('compare-func');
+var Q = require('q');
+var readFile = Q.denodeify(require('fs').readFile);
+var resolve = require('path').resolve;
+var changelogrcConfig = require('./lib/changelogrc-config');
+var transformFn = require('./lib/transform-fn');
 
-const changelogrcConfig = require('./lib/changelogrc-config');
-const transformFn = require('./lib/transform-fn');
+module.exports = Promise.resolve(changelogrcConfig()).then(function (config) {
+  return Q.all([
+    readFile(resolve(__dirname, 'templates/template.hbs'), 'utf-8'),
+    readFile(resolve(__dirname, 'templates/header.hbs'), 'utf-8'),
+    readFile(resolve(__dirname, 'templates/commit.hbs'), 'utf-8'),
+    readFile(resolve(__dirname, 'templates/footer.hbs'), 'utf-8')
+  ]).spread(function (template, header, commit, footer) {
+    var parserOpts = {
+      headerPattern: /^(\w*)(?:\((.*)\))?\: (.*)$/,
+      headerCorrespondence: [
+        'type',
+        'scope',
+        'subject'
+      ],
+      noteKeywords: ['BREAKING CHANGE', 'BREAKING CHANGES'],
+      revertPattern: /^revert:\s([\s\S]*?)\s*This reverts commit (\w*)\./,
+      revertCorrespondence: ['header', 'hash']
+    };
 
-let config = changelogrcConfig();
+    var writerOpts = {
+      mainTemplate: template,
+      headerPartial: header,
+      commitPartial: commit,
+      footerPartial: footer,
+      transform: transformFn(config)
+    };
 
-module.exports = Promise.resolve(config).then(value => Q.all([
-  readFile(resolve(__dirname, 'templates/template.hbs'), 'utf-8'),
-  readFile(resolve(__dirname, 'templates/header.hbs'), 'utf-8'),
-  readFile(resolve(__dirname, 'templates/commit.hbs'), 'utf-8'),
-  readFile(resolve(__dirname, 'templates/footer.hbs'), 'utf-8')
-]).spread((template, header, commit, footer) => {
-  const parserOpts = {
-    headerPattern: /^(\w*)(?:\((.*)\))?\: (.*)$/,
-    headerCorrespondence: [
-      'type',
-      'scope',
-      'subject'
-    ],
-    noteKeywords: ['BREAKING CHANGE', 'BREAKING CHANGES'],
-    revertPattern: /^revert:\s([\s\S]*?)\s*This reverts commit (\w*)\./,
-    revertCorrespondence: ['header', 'hash']
-  };
-
-  let writerOpts = {
-    mainTemplate: template,
-    headerPartial: header,
-    commitPartial: commit,
-    footerPartial: footer,
-    transform: transformFn(value)
-  };
-
-  return {
-    parserOpts: parserOpts,
-    writerOpts: writerOpts,
-    groupBy: 'type',
-    commitGroupsSort: compareFunc(['position', 'title']),
-    commitsSort: compareFunc(['scope', 'subject']),
-    noteGroupsSort: 'title',
-    notesSort: compareFunc
-  };
-}));
+    return {
+      parserOpts: parserOpts,
+      writerOpts: writerOpts,
+      groupBy: 'type',
+      commitGroupsSort: compareFunc(['position', 'title']),
+      commitsSort: compareFunc(['scope', 'subject']),
+      noteGroupsSort: 'title',
+      notesSort: compareFunc
+    };
+  });
+});

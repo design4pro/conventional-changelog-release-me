@@ -1,33 +1,33 @@
 'use strict';
 
-const execSync = require('child_process').execSync;
-const conventionalChangelogCore = require('conventional-changelog-core');
-const preset = require('./index');
-const expect = require('chai').expect;
-const commit = require('git-dummy-commit');
-const shell = require('shelljs');
-const through = require('through2');
+var execSync = require('child_process').execSync;
+var conventionalChangelogCore = require('conventional-changelog-core');
+var preset = require('./index');
+var expect = require('chai').expect;
+var commit = require('git-dummy-commit');
+var shell = require('shelljs');
+var through = require('through2');
 
 function initInTempFolder() {
-    shell.rm('-rf', 'tmp');
-    shell.config.silent = true;
-    shell.mkdir('tmp');
-    shell.cd('tmp');
-    shell.exec('git init');
+  shell.rm('-rf', 'tmp');
+  shell.config.silent = true;
+  shell.mkdir('tmp');
+  shell.cd('tmp');
+  shell.exec('git init');
 
-    commit('root-commit');
+  commit('root-commit');
 }
 
 function finishTemp() {
-    shell.cd('../');
-    shell.rm('-rf', 'tmp');
+  shell.cd('../');
+  shell.rm('-rf', 'tmp');
 }
 
-describe('preset', () => {
+describe('preset', function () {
   beforeEach(initInTempFolder);
   afterEach(finishTemp);
 
-  it('should work if there is no semver tag', (done) => {
+  it('should work if there is no semver tag', function (done) {
     commit('chore: first commit');
     commit(['feat: amazing new module', 'BREAKING CHANGE: Not backward compatible.']);
     commit(['fix(compile): avoid a bug', 'BREAKING CHANGE: The Change is huge.']);
@@ -38,10 +38,10 @@ describe('preset', () => {
     conventionalChangelogCore({
       config: preset
     })
-      .on('error', (err) => {
+      .on('error', function (err) {
         done(err);
       })
-      .pipe(through((chunk) => {
+      .pipe(through(function (chunk) {
         chunk = chunk.toString();
 
         expect(chunk).to.include('amazing new module');
@@ -69,32 +69,32 @@ describe('preset', () => {
       }));
   });
 
-  it('should replace #[0-9]+ with GitHub issue URL', (done) => {
+  it('should replace #[0-9]+ with GitHub issue URL', function (done) {
     commit('feat(awesome): addresses the issue brought up in #133');
 
     conventionalChangelogCore({
       config: preset
     })
-      .on('error', (err) => {
+      .on('error', function (err) {
         done(err);
       })
-      .pipe(through((chunk) => {
+      .pipe(through(function (chunk) {
         chunk = chunk.toString();
         expect(chunk).to.include('[#133](https://github.com/design4pro/conventional-changelog-release-me/issues/133)');
         done();
       }));
   });
 
-  it('should remove the issues that already appear in the subject', (done) => {
+  it('should remove the issues that already appear in the subject', function (done) {
     commit('feat(awesome): fix #88');
 
     conventionalChangelogCore({
       config: preset
     })
-      .on('error', (err) => {
+      .on('error', function (err) {
         done(err);
       })
-      .pipe(through((chunk) => {
+      .pipe(through(function (chunk) {
         chunk = chunk.toString();
         expect(chunk).to.include('[#88](https://github.com/design4pro/conventional-changelog-release-me/issues/88)');
         expect(chunk).to.not.include('closes [#88](https://github.com/design4pro/conventional-changelog-release-me/issues/88)');
@@ -102,23 +102,23 @@ describe('preset', () => {
       }));
   });
 
-  it('should replace @username with GitHub user URL', (done) => {
+  it('should replace @username with GitHub user URL', function (done) {
     commit('feat(awesome): issue brought up by @bcoe! on Friday');
 
     conventionalChangelogCore({
       config: preset
     })
-      .on('error', (err) => {
+      .on('error', function (err) {
         done(err);
       })
-      .pipe(through((chunk) => {
+      .pipe(through(function (chunk) {
         chunk = chunk.toString();
         expect(chunk).to.include('[@bcoe](https://github.com/bcoe)');
         done();
       }));
   });
 
-  it('should not discard commit if there is BREAKING CHANGE', (done) => {
+  it('should not discard commit if there is BREAKING CHANGE', function (done) {
     commit(['docs(readme): make it clear', 'BREAKING CHANGE: The Change is huge.']);
     commit(['style(whitespace): make it easier to read', 'BREAKING CHANGE: The Change is huge.']);
     commit(['refactor(code): change a lot of code', 'BREAKING CHANGE: The Change is huge.']);
@@ -128,10 +128,10 @@ describe('preset', () => {
     conventionalChangelogCore({
       config: preset
     })
-      .on('error', (err) => {
+      .on('error', function (err) {
         done(err);
       })
-      .pipe(through((chunk) => {
+      .pipe(through(function (chunk) {
         chunk = chunk.toString();
 
         expect(chunk).to.include('Documentation');
@@ -144,16 +144,16 @@ describe('preset', () => {
       }));
   });
 
-  it('should BREAKING CHANGES the same as BREAKING CHANGE', (done) => {
+  it('should BREAKING CHANGES the same as BREAKING CHANGE', function (done) {
     commit(['feat(deps): bump', 'BREAKING CHANGES: Also works :)']);
 
     conventionalChangelogCore({
       config: preset
     })
-      .on('error', (err) => {
+      .on('error', function (err) {
         done(err);
       })
-      .pipe(through((chunk) => {
+      .pipe(through(function (chunk) {
         chunk = chunk.toString();
 
         expect(chunk).to.include('Also works :)');
@@ -162,7 +162,7 @@ describe('preset', () => {
       }));
   });
 
-  it('should work if there is a semver tag', (done) => {
+  it('should work if there is a semver tag', function (done) {
     shell.exec('git tag v1.0.0');
     commit('feat: some more features');
     var i = 0;
@@ -171,10 +171,10 @@ describe('preset', () => {
       config: preset,
       outputUnreleased: true
     })
-      .on('error', (err) => {
+      .on('error', function (err) {
         done(err);
       })
-      .pipe(through((chunk, enc, cb) => {
+      .pipe(through(function (chunk, enc, cb) {
         chunk = chunk.toString();
 
         expect(chunk).to.include('some more features');
@@ -182,7 +182,7 @@ describe('preset', () => {
 
         i++;
         cb();
-      }, () => {
+      }, function () {
         expect(i).to.equal(1);
         done();
       }));
