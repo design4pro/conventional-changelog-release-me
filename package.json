@@ -39,7 +39,7 @@
   "devDependencies": {
     "better-than-before": "1.0.0",
     "chai": "4.1.2",
-    "codecov": "2.3.1",
+    "codecov": "3.1.0",
     "commitizen": "2.10.1",
     "conventional-changelog": "1.1.24",
     "conventional-changelog-core": "1.9.5",
