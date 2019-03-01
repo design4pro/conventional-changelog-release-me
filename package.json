@@ -57,7 +57,7 @@
     "release-me": "1.4.2",
     "rimraf": "2.6.2",
     "shelljs": "0.8.2",
-    "through2": "2.0.3",
+    "through2": "3.0.1",
     "winston": "3.1.0"
   },
   "config": {
